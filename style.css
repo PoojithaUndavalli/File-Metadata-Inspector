@@ -1,0 +1,386 @@
+/* ===========================
+   Google Font
+=========================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#4f46e5,#06b6d4);
+    padding:40px 20px;
+}
+
+/* ===========================
+   Container
+=========================== */
+
+.container{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+}
+
+/* ===========================
+   Header
+=========================== */
+
+header{
+    text-align:center;
+    color:#fff;
+    margin-bottom:35px;
+}
+
+header h1{
+    font-size:40px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+header p{
+    opacity:.95;
+    font-size:17px;
+}
+
+/* ===========================
+   Upload Card
+=========================== */
+
+.upload-card{
+    margin-bottom:30px;
+}
+
+.drop-area{
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(18px);
+    border:3px dashed rgba(255,255,255,.5);
+    border-radius:25px;
+    padding:45px;
+    text-align:center;
+    transition:.35s;
+    cursor:pointer;
+}
+
+.drop-area:hover{
+    transform:translateY(-4px);
+    background:rgba(255,255,255,.25);
+}
+
+.drop-area.active{
+    background:#ffffff;
+    border-color:#0ea5e9;
+}
+
+.upload-icon{
+    font-size:70px;
+    color:#fff;
+    margin-bottom:20px;
+}
+
+.drop-area h2{
+    color:white;
+    margin-bottom:12px;
+}
+
+.drop-area p{
+    color:white;
+    margin:10px 0;
+}
+
+.drop-area small{
+    display:block;
+    margin-top:18px;
+    color:white;
+}
+
+/* ===========================
+   Button
+=========================== */
+
+button{
+    margin-top:12px;
+    border:none;
+    outline:none;
+    padding:14px 32px;
+    font-size:16px;
+    border-radius:12px;
+    cursor:pointer;
+    background:white;
+    color:#2563eb;
+    font-weight:600;
+    transition:.3s;
+}
+
+button:hover{
+    background:#2563eb;
+    color:white;
+}
+
+/* ===========================
+   Preview
+=========================== */
+
+.preview-section{
+    margin-top:20px;
+}
+
+.preview-section h2{
+    color:white;
+    margin-bottom:15px;
+}
+
+.preview-container{
+
+    min-height:320px;
+
+    background:white;
+
+    border-radius:20px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    padding:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+}
+
+.preview-container img{
+
+    max-width:100%;
+
+    max-height:420px;
+
+    border-radius:15px;
+
+}
+
+.preview-container iframe{
+
+    width:100%;
+
+    height:520px;
+
+    border:none;
+
+}
+
+.placeholder{
+
+    text-align:center;
+
+    color:#64748b;
+
+}
+
+.placeholder i{
+
+    font-size:75px;
+
+    margin-bottom:15px;
+
+}
+
+.placeholder p{
+
+    font-size:18px;
+
+}
+
+/* ===========================
+   Cards
+=========================== */
+
+.metadata-grid{
+
+    margin-top:35px;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+
+    gap:25px;
+
+}
+
+.card{
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+}
+
+.card h2{
+
+    margin-bottom:18px;
+
+    color:#2563eb;
+
+}
+
+.card table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.card td{
+
+    padding:14px 10px;
+
+    border-bottom:1px solid #eee;
+
+    font-size:15px;
+
+}
+
+.card td:first-child{
+
+    font-weight:600;
+
+    width:40%;
+
+    color:#1e293b;
+
+}
+
+.card td:last-child{
+
+    color:#475569;
+
+    word-break:break-word;
+
+}
+
+/* ===========================
+   Animations
+=========================== */
+
+@keyframes fade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.preview-container,
+.card{
+
+    animation:fade .6s ease;
+
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:900px){
+
+    .metadata-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    body{
+
+        padding:20px 15px;
+
+    }
+
+    header h1{
+
+        font-size:30px;
+
+    }
+
+    .drop-area{
+
+        padding:30px 15px;
+
+    }
+
+    .preview-container{
+
+        min-height:250px;
+
+    }
+
+    .preview-container iframe{
+
+        height:400px;
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    header h1{
+
+        font-size:24px;
+
+    }
+
+    .card{
+
+        padding:18px;
+
+    }
+
+    .card td{
+
+        display:block;
+
+        width:100%;
+        padding:8px 0;
+    }
+
+    .card td:first-child{
+        font-weight:700;
+        border-bottom:none;
+    }
+
+    button{
+        width:100%;
+    }
+
+    .upload-icon{
+        font-size:55px;
+    }
+}
