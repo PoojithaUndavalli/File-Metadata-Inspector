@@ -1,16 +1,20 @@
-// Elements
+// ============================
+// DOM Elements
+// ============================
+
 const fileInput = document.getElementById("fileInput");
 const browseBtn = document.getElementById("browseBtn");
 const dropArea = document.getElementById("dropArea");
 const previewContainer = document.getElementById("previewContainer");
 
-// Metadata Fields
+// Browser Metadata
 const fileName = document.getElementById("fileName");
 const fileSize = document.getElementById("fileSize");
 const mimeType = document.getElementById("mimeType");
 const modifiedDate = document.getElementById("modifiedDate");
 const dimensions = document.getElementById("dimensions");
 
+// EXIF Metadata
 const cameraMake = document.getElementById("cameraMake");
 const cameraModel = document.getElementById("cameraModel");
 const dateTaken = document.getElementById("dateTaken");
@@ -19,17 +23,28 @@ const orientation = document.getElementById("orientation");
 const gpsLat = document.getElementById("gpsLat");
 const gpsLong = document.getElementById("gpsLong");
 
+// ============================
 // Browse Button
-browseBtn.addEventListener("click", () => fileInput.click());
+// ============================
 
+browseBtn.addEventListener("click", () => {
+    fileInput.click();
+});
+
+// ============================
 // File Input
+// ============================
+
 fileInput.addEventListener("change", (e) => {
-    if (e.target.files.length) {
+    if (e.target.files.length > 0) {
         handleFile(e.target.files[0]);
     }
 });
 
-// Drag Events
+// ============================
+// Drag & Drop
+// ============================
+
 dropArea.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropArea.classList.add("active");
@@ -41,17 +56,21 @@ dropArea.addEventListener("dragleave", () => {
 
 dropArea.addEventListener("drop", (e) => {
     e.preventDefault();
+
     dropArea.classList.remove("active");
 
-    if (e.dataTransfer.files.length) {
+    if (e.dataTransfer.files.length > 0) {
         handleFile(e.dataTransfer.files[0]);
     }
 });
 
+// ============================
 // Main Function
+// ============================
+
 function handleFile(file) {
 
-    const allowed = [
+    const supportedTypes = [
         "image/jpeg",
         "image/png",
         "image/gif",
@@ -59,43 +78,49 @@ function handleFile(file) {
         "application/pdf"
     ];
 
-    if (!allowed.includes(file.type)) {
+    if (!supportedTypes.includes(file.type)) {
+
         alert("Only Images and PDFs are supported.");
+
         return;
     }
 
-    showBasicMetadata(file);
+    displayBrowserMetadata(file);
 
     if (file.type.startsWith("image")) {
-        showImage(file);
+
+        displayImage(file);
+
     } else {
-        showPDF(file);
+
+        displayPDF(file);
+
     }
 }
 
+// ============================
 // Browser Metadata
-function showBasicMetadata(file) {
+// ============================
+
+function displayBrowserMetadata(file) {
 
     fileName.textContent = file.name;
-    fileSize.textContent = formatSize(file.size);
+
+    fileSize.textContent = formatFileSize(file.size);
+
     mimeType.textContent = file.type;
-    modifiedDate.textContent = new Date(file.lastModified).toLocaleString();
+
+    modifiedDate.textContent =
+        new Date(file.lastModified).toLocaleString();
 }
 
-// Format Bytes
-function formatSize(bytes) {
-
-    if (bytes < 1024)
-        return bytes + " Bytes";
-
-    if (bytes < 1024 * 1024)
-        return (bytes / 1024).toFixed(2) + " KB";
-
-    return (bytes / 1024 / 1024).toFixed(2) + " MB";
-}
-
+// ============================
 // Image Preview
-function showImage(file) {
+// ============================
+
+function displayImage(file) {
+
+    clearExif();
 
     const reader = new FileReader();
 
@@ -112,78 +137,127 @@ function showImage(file) {
         img.onload = function () {
 
             dimensions.textContent =
-                img.naturalWidth + " × " + img.naturalHeight;
+                `${img.naturalWidth} × ${img.naturalHeight}`;
 
-            loadExif(img);
+            loadEXIF(file);
+
         };
+
     };
 
     reader.readAsDataURL(file);
 }
 
+// ============================
 // PDF Preview
-function showPDF(file) {
+// ============================
 
-    dimensions.textContent = "-";
+function displayPDF(file) {
 
     clearExif();
+
+    dimensions.textContent = "-";
 
     const url = URL.createObjectURL(file);
 
     previewContainer.innerHTML = `
-        <iframe src="${url}"></iframe>
+        <iframe src="${url}" width="100%" height="550"></iframe>
     `;
 }
 
-// EXIF
-function loadExif(image) {
+// ============================
+// EXIF Metadata
+// ============================
 
-    EXIF.getData(image, function () {
+function loadEXIF(file) {
+
+    EXIF.getData(file, function () {
 
         cameraMake.textContent =
-            EXIF.getTag(this, "Make") || "-";
+            EXIF.getTag(this, "Make") || "Not Available";
 
         cameraModel.textContent =
-            EXIF.getTag(this, "Model") || "-";
+            EXIF.getTag(this, "Model") || "Not Available";
 
         dateTaken.textContent =
-            EXIF.getTag(this, "DateTimeOriginal") || "-";
+            EXIF.getTag(this, "DateTimeOriginal") || "Not Available";
 
         lensModel.textContent =
-            EXIF.getTag(this, "LensModel") || "-";
+            EXIF.getTag(this, "LensModel") || "Not Available";
 
         orientation.textContent =
-            EXIF.getTag(this, "Orientation") || "-";
+            EXIF.getTag(this, "Orientation") || "Not Available";
+
+        const lat =
+            EXIF.getTag(this, "GPSLatitude");
+
+        const latRef =
+            EXIF.getTag(this, "GPSLatitudeRef");
+
+        const lon =
+            EXIF.getTag(this, "GPSLongitude");
+
+        const lonRef =
+            EXIF.getTag(this, "GPSLongitudeRef");
 
         gpsLat.textContent =
-            convertGPS(EXIF.getTag(this, "GPSLatitude"));
+            convertGPS(lat, latRef);
 
         gpsLong.textContent =
-            convertGPS(EXIF.getTag(this, "GPSLongitude"));
+            convertGPS(lon, lonRef);
+
     });
+
 }
 
-// Convert GPS
-function convertGPS(gps) {
+// ============================
+// Convert GPS Coordinates
+// ============================
 
-    if (!gps)
-        return "-";
+function convertGPS(coords, ref) {
 
-    let d = gps[0];
-    let m = gps[1];
-    let s = gps[2];
+    if (!coords)
+        return "Not Available";
 
-    return (
-        d +
-        "° " +
-        m +
-        "' " +
-        s.toFixed(2) +
-        '"'
-    );
+    const degrees = Number(coords[0]);
+
+    const minutes = Number(coords[1]);
+
+    const seconds = Number(coords[2]);
+
+    let decimal =
+        degrees +
+        minutes / 60 +
+        seconds / 3600;
+
+    if (ref === "S" || ref === "W")
+        decimal *= -1;
+
+    return decimal.toFixed(6);
 }
 
-// Reset EXIF
+// ============================
+// Format File Size
+// ============================
+
+function formatFileSize(bytes) {
+
+    if (bytes < 1024)
+        return `${bytes} Bytes`;
+
+    if (bytes < 1024 * 1024)
+        return `${(bytes / 1024).toFixed(2)} KB`;
+
+    if (bytes < 1024 * 1024 * 1024)
+        return `${(bytes / 1024 / 1024).toFixed(2)} MB`;
+
+    return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+}
+
+// ============================
+// Clear EXIF Fields
+// ============================
+
 function clearExif() {
 
     cameraMake.textContent = "-";
