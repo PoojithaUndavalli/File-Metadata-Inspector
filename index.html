@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Metadata Extractor</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- EXIF JS -->
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+
+        <h1>
+            <i class="fa-solid fa-file-circle-check"></i>
+            File Metadata Extractor
+        </h1>
+
+        <p>
+            Upload an Image or PDF to view its metadata using the Browser File API
+            and EXIF.js.
+        </p>
+
+    </header>
+
+    <!-- Upload Card -->
+
+    <section class="upload-card">
+
+        <div id="dropArea" class="drop-area">
+
+            <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+
+            <h2>Drag & Drop File Here</h2>
+
+            <p>OR</p>
+
+            <input
+                type="file"
+                id="fileInput"
+                accept=".jpg,.jpeg,.png,.gif,.webp,.pdf"
+                hidden>
+
+            <button id="browseBtn">
+                Browse File
+            </button>
+
+            <small>
+                Supported: JPG, PNG, GIF, WEBP, PDF
+            </small>
+
+        </div>
+
+    </section>
+
+    <!-- Preview -->
+
+    <section class="preview-section">
+
+        <h2>
+            <i class="fa-solid fa-eye"></i>
+            Preview
+        </h2>
+
+        <div id="previewContainer" class="preview-container">
+
+            <div class="placeholder">
+
+                <i class="fa-regular fa-image"></i>
+
+                <p>No file selected</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Metadata -->
+
+    <section class="metadata-grid">
+
+        <!-- Browser Metadata -->
+
+        <div class="card">
+
+            <h2>
+                <i class="fa-solid fa-circle-info"></i>
+                Browser Metadata
+            </h2>
+
+            <table>
+
+                <tbody>
+
+                <tr>
+                    <td>File Name</td>
+                    <td id="fileName">-</td>
+                </tr>
+
+                <tr>
+                    <td>File Size</td>
+                    <td id="fileSize">-</td>
+                </tr>
+
+                <tr>
+                    <td>MIME Type</td>
+                    <td id="mimeType">-</td>
+                </tr>
+
+                <tr>
+                    <td>Last Modified</td>
+                    <td id="modifiedDate">-</td>
+                </tr>
+
+                <tr>
+                    <td>Dimensions</td>
+                    <td id="dimensions">-</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- EXIF -->
+
+        <div class="card">
+
+            <h2>
+
+                <i class="fa-solid fa-camera"></i>
+
+                EXIF Metadata
+
+            </h2>
+
+            <table>
+
+                <tbody>
+
+                <tr>
+                    <td>Camera Make</td>
+                    <td id="cameraMake">-</td>
+                </tr>
+
+                <tr>
+                    <td>Camera Model</td>
+                    <td id="cameraModel">-</td>
+                </tr>
+
+                <tr>
+                    <td>Date Taken</td>
+                    <td id="dateTaken">-</td>
+                </tr>
+
+                <tr>
+                    <td>Lens Model</td>
+                    <td id="lensModel">-</td>
+                </tr>
+
+                <tr>
+                    <td>Orientation</td>
+                    <td id="orientation">-</td>
+                </tr>
+
+                <tr>
+                    <td>GPS Latitude</td>
+                    <td id="gpsLat">-</td>
+                </tr>
+
+                <tr>
+                    <td>GPS Longitude</td>
+                    <td id="gpsLong">-</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
